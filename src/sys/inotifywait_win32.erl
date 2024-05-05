@@ -1,6 +1,6 @@
 -module(inotifywait_win32).
 -include("api.hrl").
--export(?API).
+-export([find_executable/0, start_port/2, known_events/0, line_to_event/1]).
 
 find_executable() ->
     fs:find_executable("inotifywait.exe", "deps/fs/priv/inotifywait.exe").
@@ -19,11 +19,11 @@ line_to_event(Line) ->
     Path = filename:join(Dir,DirEntry),
     {Path, Flags}.
 
-    
+
 convert_flag("CREATE") -> created;
 convert_flag("MODIFY") -> modified;
 convert_flag("DELETE") -> removed;
-convert_flag("MOVE") -> renamed;
+convert_flag("MOVED_TO") -> renamed;
 convert_flag(_) -> undefined.
 
 re() ->

@@ -1,7 +1,11 @@
-{application, fs, 
- [{description, "VXZ FS Listener"},
-  {vsn, "0.9.1"},
+{application, fs,
+ [{description, "FS Native Listener (Mac Windows Linux)"},
+  {vsn, "8.6.1"},
   {registered, []},
   {applications, [kernel,stdlib]},
   {mod, { fs_app, []}},
-  {env, []}]}.
+  {env, [ {backwards_compatible, true} ]},
+  {maintainers,["Maxim Sokhatsky", "Vladimir Kirillov"]},
+  {licenses, ["ISC"]},
+  {links,[{"Github","https://github.com/synrc/fs"}]}
+  ]}.

@@ -1,6 +1,6 @@
 -module(fsevents).
 -include("api.hrl").
--export(?API).
+-export([find_executable/0, start_port/2, known_events/0, line_to_event/1]).
 
 find_executable() ->
     case application:get_env(fs, events_helper) of
@@ -14,9 +14,10 @@ known_events() ->
 
 start_port(Path, Cwd) ->
     erlang:open_port({spawn_executable, find_executable()},
-        [stream, exit_status, {line, 16384}, {args, ["-F", Path]}, {cd, Cwd}]).
+        [stream, exit_status, binary, {line, 16384}, {args, ["-F", Path]}, {cd, Cwd}]).
 
-line_to_event(Line) ->
+line_to_event(Line0) ->
+    Line = unicode:characters_to_list(Line0, utf8),   
     [_EventId, Flags1, Path] = string:tokens(Line, [$\t]),
     [_, Flags2] = string:tokens(Flags1, [$=]),
     {ok, T, _} = erl_scan:string(Flags2 ++ "."),
